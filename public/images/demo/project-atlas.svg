@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title">
+  <title id="title">Atlas Knowledge Base demo project</title>
+  <rect width="1200" height="675" fill="#ebe4d6"/>
+  <g fill="none" stroke="#161311" stroke-width="4" opacity=".28">
+    <circle cx="600" cy="338" r="250"/>
+    <circle cx="600" cy="338" r="170"/>
+    <path d="M180 338h840M600 70v536M350 145l500 386M850 145 350 531"/>
+  </g>
+  <circle cx="600" cy="338" r="80" fill="#c45c26"/>
+  <text x="72" y="105" fill="#161311" font-family="system-ui,sans-serif" font-size="42" font-weight="700">ATLAS KNOWLEDGE BASE</text>
+</svg>

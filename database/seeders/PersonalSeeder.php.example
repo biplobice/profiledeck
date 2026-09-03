@@ -1,0 +1,40 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Profile;
+use App\Models\User;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+
+/**
+ * Copy this file to PersonalSeeder.php. That destination is gitignored.
+ *
+ * Add companies, experiences, skills, education, certifications, training,
+ * and interests here using the same model APIs demonstrated by DemoSeeder.
+ */
+class PersonalSeeder extends Seeder
+{
+    public function run(): void
+    {
+        User::query()->updateOrCreate(
+            ['email' => 'you@example.com'],
+            ['name' => 'Your Name', 'password' => Hash::make('change-me')],
+        );
+
+        Profile::query()->updateOrCreate(
+            ['email' => 'you@example.com'],
+            [
+                'name' => 'Your Name',
+                'headline' => 'Your professional headline',
+                'tagline' => ':years+ years building useful software',
+                'summary' => 'A concise summary for your CV.',
+                'bio' => 'A longer introduction for your profile.',
+                'location' => 'Your location',
+                'website' => 'https://example.com',
+            ],
+        );
+
+        $this->call(PersonalProjectSeeder::class);
+    }
+}

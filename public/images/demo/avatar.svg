@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 750" role="img" aria-labelledby="title desc">
+  <title id="title">Demo profile portrait</title>
+  <desc id="desc">Abstract geometric portrait used by the ProfileDeck demo.</desc>
+  <rect width="600" height="750" fill="#ebe4d6"/>
+  <circle cx="300" cy="245" r="125" fill="#c45c26" opacity=".82"/>
+  <path d="M115 750c18-210 112-320 185-320s167 110 185 320z" fill="#161311" opacity=".88"/>
+  <circle cx="255" cy="225" r="12" fill="#161311"/>
+  <circle cx="345" cy="225" r="12" fill="#161311"/>
+  <path d="M255 300c28 24 62 24 90 0" fill="none" stroke="#161311" stroke-width="10" stroke-linecap="round"/>
+</svg>

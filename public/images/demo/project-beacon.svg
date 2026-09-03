@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title">
+  <title id="title">Beacon Commerce demo project</title>
+  <rect width="1200" height="675" fill="#161311"/>
+  <circle cx="950" cy="120" r="240" fill="#c45c26" opacity=".72"/>
+  <path d="M0 675 430 180l360 495z" fill="#ebe4d6" opacity=".92"/>
+  <path d="M300 675 650 290l330 385z" fill="#f6f1e8" opacity=".5"/>
+  <text x="80" y="110" fill="#f6f1e8" font-family="system-ui,sans-serif" font-size="42" font-weight="700">BEACON COMMERCE</text>
+</svg>

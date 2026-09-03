@@ -1,0 +1,28 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Project;
+use Illuminate\Database\Seeder;
+
+/**
+ * Copy this file to PersonalProjectSeeder.php. That destination is gitignored.
+ */
+class PersonalProjectSeeder extends Seeder
+{
+    public function run(): void
+    {
+        Project::query()->updateOrCreate(
+            ['name' => 'My featured project'],
+            [
+                'kind' => Project::KIND_PERSONAL,
+                'summary' => 'What the project does and why it matters.',
+                'technologies' => ['Laravel', 'Filament'],
+                'url' => 'https://example.com',
+                'is_featured' => true,
+                'is_visible' => true,
+                'sort_order' => 0,
+            ],
+        );
+    }
+}

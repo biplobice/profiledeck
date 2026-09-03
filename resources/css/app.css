@@ -1,0 +1,116 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Outfit', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+    --color-ink: #161311;
+    --color-paper: #f6f1e8;
+    --color-mist: #ebe4d6;
+    --color-line: #d8cfc0;
+    --color-clay: #c45c26;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: var(--color-paper);
+    color: var(--color-ink);
+}
+
+.font-display {
+    font-family: var(--font-display);
+}
+
+.site-nav summary {
+    list-style: none;
+}
+
+.site-nav summary::-webkit-details-marker {
+    display: none;
+}
+
+.timeline {
+    position: relative;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0.4rem;
+    bottom: 0.4rem;
+    left: 0.34rem;
+    width: 1px;
+    background: var(--color-line);
+}
+
+@media (min-width: 768px) {
+    .timeline::before {
+        left: 9.15rem;
+    }
+}
+
+.timeline-dot {
+    position: absolute;
+    left: 0;
+    top: 0.45rem;
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 999px;
+    background: var(--color-paper);
+    border: 2px solid var(--color-clay);
+}
+
+@media (min-width: 768px) {
+    .timeline-dot {
+        left: 8.82rem;
+    }
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--color-line);
+    background: #fffdf8;
+    border-radius: 999px;
+    padding: 0.28rem 0.7rem;
+    font-size: 0.8125rem;
+    line-height: 1.3;
+}
+
+.panel {
+    border: 1px solid var(--color-line);
+    background: rgb(255 255 255 / 0.6);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+}
+
+.panel-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgb(22 19 17 / 0.5);
+}
+
+/* Fallback tile for projects without a screenshot. */
+.project-monogram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background:
+        radial-gradient(circle at 30% 20%, rgb(196 92 38 / 0.12), transparent 60%),
+        linear-gradient(135deg, var(--color-mist), #fffdf8);
+    font-family: var(--font-display);
+    font-size: 2.75rem;
+    letter-spacing: 0.06em;
+    color: rgb(22 19 17 / 0.22);
+}
