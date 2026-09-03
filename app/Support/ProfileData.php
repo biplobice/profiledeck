@@ -35,6 +35,7 @@ final class ProfileData
         public Collection $trainings,
         public Collection $interests,
         public ?Experience $currentRole,
+        public int $visibleProjectCount,
     ) {}
 
     public static function load(): self
@@ -78,7 +79,13 @@ final class ProfileData
             trainings: Training::query()->visible()->orderBy('sort_order')->get(),
             interests: Interest::query()->visible()->orderBy('sort_order')->get(),
             currentRole: $experiences->firstWhere('ended_on', null) ?? $experiences->first(),
+            visibleProjectCount: Project::query()->visible()->count(),
         );
+    }
+
+    public function hasProjectArchive(): bool
+    {
+        return $this->visibleProjectCount > $this->featuredProjects->count();
     }
 
     /**

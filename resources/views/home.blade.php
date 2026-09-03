@@ -4,60 +4,16 @@
 @section('description', $data->resolve($data->profile->summary))
 
 @section('header')
-    @php
-        $siteHost = parse_url($data->profile->website, PHP_URL_HOST) ?: config('app.name');
-        $blogName = parse_url($data->profile->blog_url, PHP_URL_HOST) ?: 'Writing';
-        $nameParts = preg_split('/\s+/', trim($data->profile->name), 2);
-        $watermark = collect(explode(' ', $data->profile->name))->map(fn ($part) => strtoupper(substr($part, 0, 1)))->join('');
-        $hostMatch = [];
-        preg_match('/^([^.]+)(\..+)$/', $siteHost, $hostMatch);
-    @endphp
-
-    <header class="site-header">
-        <div class="site-shell header-inner">
-            <a href="{{ url('/') }}" class="site-brand" rel="home">
-                <img class="brand-mark" src="{{ asset('images/logo-mark.svg') }}" alt="" width="38" height="38">
-                <span class="brand-domain">
-                    @if ($hostMatch)
-                        {{ $hostMatch[1] }}<span class="brand-dot">{{ $hostMatch[2] }}</span>
-                    @else
-                        {{ $siteHost }}
-                    @endif
-                </span>
-            </a>
-
-            <nav class="site-nav" aria-label="Primary navigation" data-menu>
-                <a href="#experience">Experience</a>
-                <a href="#work">Work</a>
-                <a href="#skills">Skills</a>
-                <a href="#about">About</a>
-                @if ($data->profile->blog_url)
-                    <a href="{{ $data->profile->blog_url }}" target="_blank" rel="noreferrer">Writing</a>
-                @endif
-            </nav>
-
-            <div class="header-actions">
-                <button type="button" class="icon-button theme-toggle" data-theme-toggle aria-label="Change color theme">
-                    <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <circle cx="12" cy="12" r="4"></circle>
-                        <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path>
-                    </svg>
-                    <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"></path>
-                    </svg>
-                </button>
-                <a href="{{ route('cv.pdf') }}" class="btn btn-primary">Download CV</a>
-                <button type="button" class="icon-button menu-toggle" data-menu-toggle aria-label="Open menu" aria-expanded="false">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <path d="M4 7h16M4 12h16M4 17h16"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </header>
+    @include('partials.site-header', ['data' => $data])
 @endsection
 
 @section('content')
+    @php
+        $blogName = parse_url($data->profile->blog_url, PHP_URL_HOST) ?: 'Writing';
+        $nameParts = preg_split('/\s+/', trim($data->profile->name), 2);
+        $watermark = collect(explode(' ', $data->profile->name))->map(fn ($part) => strtoupper(substr($part, 0, 1)))->join('');
+    @endphp
+
     <section class="site-shell hero">
         <div>
             <p class="eyebrow">{{ $data->profile->headline }} · {{ $data->profile->location }}</p>
@@ -178,42 +134,14 @@
                 <p class="eyebrow">03 — Selected work</p>
                 <h2>Projects worth opening</h2>
             </div>
+            @if ($data->hasProjectArchive())
+                <a href="{{ route('projects') }}" class="btn btn-ghost">View all projects &nbsp;→</a>
+            @endif
         </div>
 
         <div class="project-grid">
             @foreach ($data->featuredProjects as $project)
-                <article class="project-card">
-                    <div class="project-card-media">
-                        @if ($project->thumbnailUrl())
-                            <img src="{{ $project->thumbnailUrl() }}" alt="{{ $project->name }}" loading="lazy">
-                        @else
-                            <div class="project-monogram">{{ $project->initials() }}</div>
-                        @endif
-                        <span class="project-kind">{{ $project->kind }}</span>
-                    </div>
-                    <div class="project-card-body">
-                        <h3>
-                            @if ($project->url)
-                                <a href="{{ $project->url }}" target="_blank" rel="noreferrer">{{ $project->name }}</a>
-                            @else
-                                {{ $project->name }}
-                            @endif
-                        </h3>
-                        @if ($project->company)
-                            <p class="font-mono text-xs uppercase tracking-[0.08em] text-[color:var(--color-muted)]">{{ $project->company->name }}</p>
-                        @endif
-                        @if ($project->summary)
-                            <p>{{ $project->summary }}</p>
-                        @endif
-                        @if ($project->technologies)
-                            <div class="chip-row">
-                                @foreach ($project->technologies as $technology)
-                                    <span class="chip">{{ $technology }}</span>
-                                @endforeach
-                            </div>
-                        @endif
-                    </div>
-                </article>
+                @include('partials.project-card', ['project' => $project])
             @endforeach
         </div>
     </section>
@@ -340,32 +268,5 @@
 @endsection
 
 @section('footer')
-    <footer id="contact" class="site-footer">
-        <div class="site-shell footer-main">
-            <h2 class="footer-title">Let’s build something <span>thoughtful.</span></h2>
-            <div class="footer-side">
-                <p>{{ $data->profile->name }} · {{ $data->profile->location }}</p>
-                <button type="button" data-email="{{ base64_encode($data->profile->email) }}" class="btn btn-ghost border-[color:var(--color-inverse-line)] text-[color:var(--color-inverse-fg)] hover:border-[color:var(--color-clay)] hover:text-[color:var(--color-clay)]">
-                    Email me &nbsp;→
-                </button>
-                <p class="text-sm text-[color:var(--color-inverse-soft)]">The address opens in your mail app — it is kept out of the page to deter scrapers.</p>
-                <div class="footer-links">
-                    @if ($data->profile->blog_url)
-                        <a href="{{ $data->profile->blog_url }}" target="_blank" rel="noreferrer">Blog</a>
-                    @endif
-                    @if ($data->profile->github_url)
-                        <a href="{{ $data->profile->github_url }}" target="_blank" rel="noreferrer">GitHub</a>
-                    @endif
-                    @if ($data->profile->linkedin_url)
-                        <a href="{{ $data->profile->linkedin_url }}" target="_blank" rel="noreferrer">LinkedIn</a>
-                    @endif
-                    <a href="{{ route('cv.pdf') }}">CV PDF</a>
-                </div>
-            </div>
-        </div>
-        <div class="site-shell footer-bottom">
-            <span>&copy; {{ now()->year }} {{ $siteHost }}</span>
-            <span>Designed &amp; built with care in code.</span>
-        </div>
-    </footer>
+    @include('partials.site-footer', ['data' => $data])
 @endsection

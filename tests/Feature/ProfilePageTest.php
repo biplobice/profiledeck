@@ -125,4 +125,69 @@ class ProfilePageTest extends TestCase
     {
         $this->get('/admin/login')->assertOk();
     }
+
+    public function test_home_links_to_the_project_archive_when_more_work_exists(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('View all projects')
+            ->assertDontSee('Content Blocks');
+    }
+
+    public function test_project_archive_lists_visible_work_and_hides_drafts(): void
+    {
+        $this->get('/projects')
+            ->assertOk()
+            ->assertSee('Beacon Commerce')
+            ->assertSee('Content Blocks')
+            ->assertSee('Package')
+            ->assertDontSee('Release Notes');
+    }
+
+    public function test_project_archive_can_be_filtered_by_kind(): void
+    {
+        $this->get('/projects?kind=package')
+            ->assertOk()
+            ->assertSee('Content Blocks')
+            ->assertDontSee('Beacon Commerce');
+
+        $this->get('/projects?kind=not-a-kind')
+            ->assertOk()
+            ->assertSee('Beacon Commerce')
+            ->assertSee('Content Blocks');
+    }
+
+    public function test_project_archive_is_paginated(): void
+    {
+        $company = Company::query()->firstOrFail();
+
+        foreach (range(1, 9) as $index) {
+            Project::query()->create([
+                'company_id' => $company->getKey(),
+                'name' => 'Archive Extra '.$index,
+                'kind' => Project::KIND_PERSONAL,
+                'is_featured' => false,
+                'is_visible' => true,
+                'sort_order' => 100 + $index,
+            ]);
+        }
+
+        $this->get('/projects')
+            ->assertOk()
+            ->assertSee('Archive Extra 1')
+            ->assertDontSee('Archive Extra 9')
+            ->assertSee('Next');
+
+        $this->get('/projects?page=2')
+            ->assertOk()
+            ->assertSee('Archive Extra 9')
+            ->assertDontSee('Beacon Commerce');
+    }
+
+    public function test_home_hides_the_archive_link_when_every_visible_project_is_featured(): void
+    {
+        Project::query()->visible()->where('is_featured', false)->update(['is_visible' => false]);
+
+        $this->get('/')->assertOk()->assertDontSee('View all projects');
+    }
 }

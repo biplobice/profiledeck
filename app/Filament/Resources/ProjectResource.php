@@ -24,11 +24,7 @@ class ProjectResource extends Resource
         return $schema->components([
             Forms\Components\TextInput::make('name')->required()->maxLength(255),
             Forms\Components\Select::make('company_id')->relationship('company', 'name')->searchable(),
-            Forms\Components\Select::make('kind')->options([
-                Project::KIND_PROFESSIONAL => 'Professional',
-                Project::KIND_PERSONAL => 'Personal',
-                Project::KIND_PACKAGE => 'Package',
-            ])->required(),
+            Forms\Components\Select::make('kind')->options(Project::kindLabels())->required(),
             Forms\Components\TextInput::make('role')->maxLength(255),
             Forms\Components\TextInput::make('url')->url()->maxLength(255),
             Forms\Components\DatePicker::make('started_on'),
@@ -71,11 +67,7 @@ class ProjectResource extends Resource
                 Tables\Columns\ToggleColumn::make('is_visible')->label('Display'),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('kind')->options([
-                    Project::KIND_PROFESSIONAL => 'Professional',
-                    Project::KIND_PERSONAL => 'Personal',
-                    Project::KIND_PACKAGE => 'Package',
-                ]),
+                Tables\Filters\SelectFilter::make('kind')->options(Project::kindLabels()),
                 Tables\Filters\TernaryFilter::make('is_featured')->label('Featured'),
                 Tables\Filters\TernaryFilter::make('is_visible')->label('Display'),
             ])

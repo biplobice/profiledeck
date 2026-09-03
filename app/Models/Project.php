@@ -61,6 +61,23 @@ class Project extends Model
     }
 
     /**
+     * @return array<string, string>
+     */
+    public static function kindLabels(): array
+    {
+        return [
+            self::KIND_PROFESSIONAL => 'Professional',
+            self::KIND_PERSONAL => 'Personal',
+            self::KIND_PACKAGE => 'Package',
+        ];
+    }
+
+    public function kindLabel(): string
+    {
+        return self::kindLabels()[$this->kind] ?? ucfirst($this->kind);
+    }
+
+    /**
      * Legacy thumbnails live under public/, uploads live on the public disk.
      */
     public function thumbnailUrl(): ?string
