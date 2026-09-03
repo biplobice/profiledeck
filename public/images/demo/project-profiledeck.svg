@@ -1,11 +1,66 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title">
-  <title id="title">ProfileDeck demo project</title>
-  <rect width="1200" height="675" fill="#f6f1e8"/>
-  <rect x="90" y="85" width="1020" height="505" rx="34" fill="#fffdf8" stroke="#d8cfc0" stroke-width="6"/>
-  <circle cx="260" cy="270" r="90" fill="#c45c26" opacity=".85"/>
-  <rect x="420" y="195" width="500" height="35" rx="17" fill="#161311"/>
-  <rect x="420" y="270" width="610" height="20" rx="10" fill="#d8cfc0"/>
-  <rect x="420" y="315" width="530" height="20" rx="10" fill="#d8cfc0"/>
-  <rect x="170" y="420" width="240" height="70" rx="35" fill="#161311"/>
-  <text x="470" y="480" fill="#161311" font-family="system-ui,sans-serif" font-size="52" font-weight="700">PROFILEDECK</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">ProfileDeck</title>
+  <desc id="desc">The ProfileDeck homepage: a highlighted name headline beside a terminal card.</desc>
+
+  <defs>
+    <pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="1.4" fill="#c9cec3"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="675" fill="#f3f0e8"/>
+  <rect width="1200" height="675" fill="url(#dots)" opacity=".4"/>
+
+  <line x1="0" y1="86" x2="1200" y2="86" stroke="#c9cec3" stroke-width="2"/>
+  <g transform="translate(72 26) scale(.447)">
+    <rect width="76" height="76" rx="19" fill="#10140f"/>
+    <path d="M25 17v42h15.5C51.8 59 59 52.4 59 42.2S51.8 25.5 40.5 25.5H34" fill="none" stroke="#c7ff4a" stroke-width="8" stroke-linecap="square" stroke-linejoin="round"/>
+    <path d="m18 31-7 7 7 7" fill="none" stroke="#ff6846" stroke-width="5" stroke-linecap="square" stroke-linejoin="round"/>
+    <rect x="37" y="36" width="7" height="13" fill="#f3f0e8"/>
+  </g>
+  <text x="120" y="50" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18" font-weight="700" fill="#10140f">profiledeck<tspan fill="#ff6846">.</tspan>app</text>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" font-weight="700" fill="#60685f">
+    <text x="778" y="49">EXPERIENCE</text>
+    <text x="892" y="49">WORK</text>
+    <text x="954" y="49">SKILLS</text>
+  </g>
+  <rect x="1024" y="27" width="104" height="32" rx="16" fill="#10140f"/>
+  <text x="1044" y="48" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" font-weight="700" fill="#f3f0e8">GET THE CV</text>
+
+  <rect x="90" y="166" width="40" height="4" fill="#ff6846"/>
+  <text x="146" y="174" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" font-weight="700" fill="#60685f" letter-spacing="2.4">FULL STACK ENGINEER · PORTLAND</text>
+
+  <text x="90" y="264" font-family="Arial, Helvetica, sans-serif" font-size="80" font-weight="800" fill="#10140f" letter-spacing="-4">Alex</text>
+  <rect x="84" y="288" width="304" height="76" fill="#c7ff4a"/>
+  <text x="90" y="348" font-family="Arial, Helvetica, sans-serif" font-size="80" font-weight="800" fill="#10140f" letter-spacing="-4">Morgan</text>
+
+  <g font-family="Arial, Helvetica, sans-serif" font-size="21" fill="#60685f">
+    <text x="90" y="412">15+ years turning complex ideas</text>
+    <text x="90" y="444">into dependable products.</text>
+  </g>
+
+  <rect x="90" y="482" width="204" height="54" rx="27" fill="#10140f"/>
+  <text x="116" y="515" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" font-weight="700" fill="#f3f0e8">DOWNLOAD CV →</text>
+  <rect x="310" y="482" width="152" height="54" rx="27" fill="none" stroke="#10140f" stroke-width="2"/>
+  <text x="342" y="515" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" font-weight="700" fill="#10140f">EMAIL ME</text>
+
+  <g transform="rotate(2 895 345)">
+    <rect x="688" y="188" width="430" height="330" rx="18" fill="#10140f"/>
+    <rect x="680" y="180" width="430" height="330" rx="18" fill="#fffdf7" stroke="#10140f" stroke-width="2"/>
+    <rect x="706" y="167" width="108" height="26" fill="#ff6846"/>
+    <text x="715" y="185" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" font-weight="800" fill="#ffffff" letter-spacing="1.6">CURRENTLY</text>
+    <circle cx="712" cy="226" r="6" fill="#ff6846"/>
+    <circle cx="734" cy="226" r="6" fill="#c9cec3"/>
+    <circle cx="756" cy="226" r="6" fill="#c7ff4a"/>
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18" fill="#10140f">
+      <text x="712" y="278"><tspan fill="#60685f">$</tspan> whoami</text>
+      <text x="712" y="308">Alex Morgan</text>
+      <text x="712" y="348"><tspan fill="#60685f">$</tspan> focus --today</text>
+      <text x="712" y="378" fill="#7b9900">useful products</text>
+      <text x="712" y="408">clean architecture</text>
+      <text x="712" y="448"><tspan fill="#60685f">$</tspan> status</text>
+      <text x="712" y="478">shipping calmly</text>
+    </g>
+    <rect x="856" y="464" width="9" height="19" fill="#ff6846"/>
+  </g>
 </svg>

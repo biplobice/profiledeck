@@ -5,12 +5,16 @@ with Laravel, Filament, Tailwind CSS, and Dompdf. Enter your career information
 once, manage it from a friendly admin panel, and publish both a responsive
 profile and a generated PDF CV from the same database.
 
-![ProfileDeck demo artwork](public/images/demo/project-profiledeck.svg)
+| Dark theme | Light theme |
+| --- | --- |
+| ![ProfileDeck homepage in the dark theme](public/images/screenshot-dark.png) | ![ProfileDeck homepage in the light theme](public/images/screenshot-light.png) |
 
 ## Features
 
 - Responsive public profile with work history, projects, skills, education,
   certifications, training, interests, and an optional external blog
+- Light and dark themes that follow the visitor's system preference and
+  remember a manual toggle
 - Filament admin resources for every content type
 - HTML CV preview and downloadable A4 PDF
 - Dynamic `:years` placeholder calculated from the oldest visible role
