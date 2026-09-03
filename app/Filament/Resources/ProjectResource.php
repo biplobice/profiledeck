@@ -56,17 +56,46 @@ class ProjectResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable(),
                 Tables\Columns\ImageColumn::make('thumbnail_path')
                     ->label('')
                     ->getStateUsing(fn (Project $record) => $record->thumbnailUrl())
                     ->imageSize(44),
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('kind')->badge(),
-                Tables\Columns\TextColumn::make('company.name'),
+                Tables\Columns\TextColumn::make('company.name')
+                    ->label('Company')
+                    ->placeholder('—')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('kind')->badge()->sortable(),
+                Tables\Columns\TextColumn::make('started_on')
+                    ->label('Started')
+                    ->date('M Y')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('ended_on')
+                    ->label('Ended')
+                    ->date('M Y')
+                    ->placeholder('—')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('sort_order')
+                    ->label('Order')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ToggleColumn::make('is_featured')->label('Featured'),
                 Tables\Columns\ToggleColumn::make('is_visible')->label('Display'),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Updated')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('company')
+                    ->relationship('company', 'name')
+                    ->searchable()
+                    ->preload(),
                 Tables\Filters\SelectFilter::make('kind')->options(Project::kindLabels()),
                 Tables\Filters\TernaryFilter::make('is_featured')->label('Featured'),
                 Tables\Filters\TernaryFilter::make('is_visible')->label('Display'),
