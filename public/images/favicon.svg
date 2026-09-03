@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="biplob.me">
+  <rect width="64" height="64" rx="14" fill="#10140f"/>
+  <path d="M19 9V53.5" fill="none" stroke="#c7ff4a" stroke-width="8"/>
+  <circle cx="33" cy="37" r="12.5" fill="none" stroke="#c7ff4a" stroke-width="8"/>
+  <circle cx="50.5" cy="14" r="5.5" fill="#ff6846"/>
+</svg>

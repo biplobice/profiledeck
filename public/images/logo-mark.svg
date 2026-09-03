@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 76" role="img" aria-labelledby="title desc">
+  <title id="title">Biplob logo</title>
+  <desc id="desc">A geometric lowercase b formed from a code bracket and cursor.</desc>
+  <rect width="76" height="76" rx="19" fill="#10140f"/>
+  <path d="M25 17v42h15.5C51.8 59 59 52.4 59 42.2S51.8 25.5 40.5 25.5H34" fill="none" stroke="#c7ff4a" stroke-width="8" stroke-linecap="square" stroke-linejoin="round"/>
+  <path d="m18 31-7 7 7 7" fill="none" stroke="#ff6846" stroke-width="5" stroke-linecap="square" stroke-linejoin="round"/>
+  <rect x="37" y="36" width="7" height="13" fill="#f3f0e8"/>
+</svg>
