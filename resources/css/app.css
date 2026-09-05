@@ -1108,6 +1108,18 @@ button {
     line-height: 1.6;
 }
 
+/* The footer flips to the inverse palette, so buttons cannot use --color-ink. */
+.site-footer .btn-ghost {
+    margin-bottom: 1.4rem;
+    border-color: var(--color-inverse-line);
+    color: var(--color-inverse-fg);
+}
+
+.site-footer .btn-ghost:hover {
+    border-color: var(--color-clay);
+    color: var(--color-clay);
+}
+
 .footer-links {
     display: flex;
     flex-wrap: wrap;

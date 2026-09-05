@@ -7,10 +7,9 @@
         <h2 class="footer-title">Let’s build something <span>thoughtful.</span></h2>
         <div class="footer-side">
             <p>{{ $data->profile->name }} · {{ $data->profile->location }}</p>
-            <button type="button" data-email="{{ base64_encode($data->profile->email) }}" class="btn btn-ghost border-[color:var(--color-inverse-line)] text-[color:var(--color-inverse-fg)] hover:border-[color:var(--color-clay)] hover:text-[color:var(--color-clay)]">
+            <button type="button" data-email="{{ base64_encode($data->profile->email) }}" class="btn btn-ghost">
                 Email me &nbsp;→
             </button>
-            <p class="text-sm text-[color:var(--color-inverse-soft)]">The address opens in your mail app — it is kept out of the page to deter scrapers.</p>
             <div class="footer-links">
                 @if ($data->profile->blog_url)
                     <a href="{{ $data->profile->blog_url }}" target="_blank" rel="noreferrer">Blog</a>
