@@ -5,7 +5,8 @@ instead of opening a public issue.
 
 ProfileDeck is a self-hosted application. Operators are responsible for:
 
-- replacing the demo administrator credentials before deployment;
+- replacing the demo administrator credentials before deployment, and
+  configuring mail if you rely on the admin password-reset link;
 - disabling debug mode in production;
 - protecting `.env`, database backups, uploaded media, and generated CVs;
 - configuring HTTPS, sessions, queues, cache, mail, and database credentials;

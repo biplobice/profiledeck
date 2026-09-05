@@ -27,6 +27,7 @@ class AdminPanelTest extends TestCase
     {
         return [
             'dashboard' => ['/admin'],
+            'account profile' => ['/admin/profile'],
             'profiles' => ['/admin/profiles'],
             'companies' => ['/admin/companies'],
             'experiences' => ['/admin/experiences'],

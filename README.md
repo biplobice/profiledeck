@@ -15,7 +15,9 @@ profile and a generated PDF CV from the same database.
   certifications, training, interests, and an optional external blog
 - Light and dark themes that follow the visitor's system preference and
   remember a manual toggle
-- Filament admin resources for every content type
+- Filament admin resources for every content type, including an account
+  profile page to change the administrator password
+- Password reset from the admin login screen (requires working mail)
 - HTML CV preview and downloadable A4 PDF
 - Dynamic `:years` placeholder calculated from the oldest visible role
 - Featured and visibility controls for projects and other records
@@ -60,6 +62,12 @@ Demo administrator:
 
 These credentials are public. Replace the demo user or change its password
 before exposing any installation to the internet.
+
+Signed in, open the user menu and choose **Profile**, or visit `/admin/profile`,
+to set a new password. From the login screen, **Forgot password?** emails a
+reset link to the administrator address. That email uses Laravel's mailer:
+`MAIL_MAILER=log` writes it to `storage/logs` locally; production needs a real
+mail service and a correct `APP_URL` so the link is reachable.
 
 ## MySQL setup
 
@@ -111,12 +119,15 @@ The browser profile image uses `photo_path` in the same way.
 
 ## Routes
 
-| Route | Purpose |
-| --- | --- |
-| `/` | Public profile |
-| `/cv` | Printable HTML CV preview |
-| `/cv.pdf` | Generated PDF download |
-| `/admin` | Filament administration |
+| Route                           | Purpose                                           |
+|---------------------------------|---------------------------------------------------|
+| `/`                             | Public profile                                    |
+| `/cv`                           | Printable HTML CV preview                         |
+| `/cv.pdf`                       | Generated PDF download                            |
+| `/admin`                        | Filament administration                           |
+| `/admin/login`                  | Administrator sign-in                             |
+| `/admin/profile`                | Change the administrator name, email, or password |
+| `/admin/password-reset/request` | Request a password reset email                    |
 
 ## Testing and formatting
 

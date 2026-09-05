@@ -43,7 +43,7 @@ class ProfileResource extends Resource
                 ->columnSpanFull(),
             Forms\Components\TextInput::make('location'),
             Forms\Components\TextInput::make('email')
-                ->helperText('Used on the CV only. The website never renders it, to keep it away from scrapers.')
+                ->helperText('Shown on the profile, footer, and CV as the public contact address.')
                 ->email()
                 ->required(),
             Forms\Components\TextInput::make('phone'),

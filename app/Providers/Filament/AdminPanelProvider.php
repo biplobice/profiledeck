@@ -27,6 +27,8 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->profile()
+            ->passwordReset()
             ->brandName(config('app.name', 'ProfileDeck'))
             ->colors([
                 'primary' => Color::Sky,
