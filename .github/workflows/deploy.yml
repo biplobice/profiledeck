@@ -1,0 +1,97 @@
+name: Deploy to production
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_migrations:
+        description: "Run database migrations (php artisan migrate --force) during this deploy"
+        type: boolean
+        required: false
+        default: false
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build frontend assets
+        run: npm run build
+
+      - name: Setup SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Upload built assets
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/deploy_key -p ${DEPLOY_PORT}" \
+            public/build/ \
+            "${DEPLOY_USER}@${DEPLOY_HOST}:domains/biplob.me/public/build/"
+
+      - name: Deploy application on server
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          RUN_MIGRATIONS: ${{ inputs.run_migrations }}
+        run: |
+          ssh -i ~/.ssh/deploy_key -p "${DEPLOY_PORT}" "${DEPLOY_USER}@${DEPLOY_HOST}" \
+            "RUN_MIGRATIONS='${RUN_MIGRATIONS}' bash -s" <<'REMOTE_SCRIPT'
+          set -euo pipefail
+          cd domains/biplob.me
+
+          echo "==> Fetching latest code"
+          git fetch origin main
+          git merge --ff-only origin/main
+
+          echo "==> Installing PHP dependencies"
+          composer install --no-dev --optimize-autoloader --no-interaction
+
+          if [ "${RUN_MIGRATIONS}" = "true" ]; then
+            echo "==> Running migrations"
+            php artisan migrate --force
+          else
+            echo "==> Skipping migrations (run_migrations input not set)"
+          fi
+
+          echo "==> Rebuilding caches"
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+
+          echo "==> Deploy complete"
+          REMOTE_SCRIPT
+
+      - name: Clean up SSH key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
