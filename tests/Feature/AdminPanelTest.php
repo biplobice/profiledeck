@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Resources\ProjectResource;
+use App\Filament\Resources\ProjectResource\Pages\EditProject;
 use App\Filament\Resources\ProjectResource\Pages\ListProjects;
 use App\Models\Company;
 use App\Models\Project;
@@ -66,6 +68,34 @@ class AdminPanelTest extends TestCase
             ->assertSee('Started')
             ->assertSee('Ended')
             ->assertSee('Northstar Studio');
+    }
+
+    public function test_project_edit_page_steps_through_neighbouring_records(): void
+    {
+        $ordered = Project::query()
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->get();
+
+        $this->assertGreaterThan(2, $ordered->count());
+
+        $first = $ordered->first();
+        $second = $ordered->get(1);
+        $last = $ordered->last();
+
+        Livewire::test(EditProject::class, ['record' => $second->getKey()])
+            ->assertActionEnabled('previous')
+            ->assertActionEnabled('next')
+            ->assertActionHasUrl('previous', ProjectResource::getUrl('edit', ['record' => $first]))
+            ->assertActionHasUrl('next', ProjectResource::getUrl('edit', ['record' => $ordered->get(2)]));
+
+        Livewire::test(EditProject::class, ['record' => $first->getKey()])
+            ->assertActionDisabled('previous')
+            ->assertActionEnabled('next');
+
+        Livewire::test(EditProject::class, ['record' => $last->getKey()])
+            ->assertActionEnabled('previous')
+            ->assertActionDisabled('next');
     }
 
     public function test_projects_can_be_sorted_and_filtered_by_company(): void
