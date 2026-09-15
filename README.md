@@ -26,6 +26,7 @@ profile and a generated PDF CV from the same database.
 - JavaScript-assisted email link that keeps the plain address out of homepage
   markup
 - Fictional demo data suitable for development and screenshots
+- Optional Google Analytics 4, Tag Manager, Search Console, Open Graph, and an XML sitemap
 
 ## Requirements
 
@@ -128,6 +129,30 @@ The browser profile image uses `photo_path` in the same way.
 | `/admin/login`                  | Administrator sign-in                             |
 | `/admin/profile`                | Change the administrator name, email, or password |
 | `/admin/password-reset/request` | Request a password reset email                    |
+| `/sitemap.xml`                  | Search-engine sitemap                             |
+| `/robots.txt`                   | Crawler rules, including the sitemap URL          |
+
+## Analytics and search tools
+
+These stay off until you set the matching `.env` values. Scripts load on the
+public site only, not in Filament admin.
+
+```dotenv
+GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX
+GOOGLE_SITE_VERIFICATION=paste-search-console-token
+```
+
+If you prefer to manage tags from Google's UI, set `GOOGLE_TAG_MANAGER_ID`
+instead of `GOOGLE_ANALYTICS_ID`. When both are present, only Tag Manager is
+emitted so page views are not counted twice.
+
+After deploy:
+
+1. Create a GA4 web stream for the production domain and paste the Measurement ID.
+2. In Search Console, add the property, paste the HTML-tag token into
+   `GOOGLE_SITE_VERIFICATION`, then submit `https://your-domain/sitemap.xml`.
+3. Run `php artisan config:clear` (or rebuild config cache) so production
+   picks up the new values.
 
 ## Testing and formatting
 

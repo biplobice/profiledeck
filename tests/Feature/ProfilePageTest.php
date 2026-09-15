@@ -126,6 +126,69 @@ class ProfilePageTest extends TestCase
         $this->get('/admin/login')->assertOk();
     }
 
+    public function test_public_pages_omit_analytics_until_configured(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertDontSee('googletagmanager.com', false)
+            ->assertDontSee('google-site-verification', false)
+            ->assertSee('og:title', false)
+            ->assertSee('application/ld+json', false);
+    }
+
+    public function test_google_analytics_is_injected_when_configured(): void
+    {
+        config([
+            'tracking.google_analytics_id' => 'G-TEST1234',
+            'tracking.google_site_verification' => 'search-console-token',
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('https://www.googletagmanager.com/gtag/js?id=G-TEST1234', false)
+            ->assertSee('G-TEST1234')
+            ->assertSee('google-site-verification')
+            ->assertSee('search-console-token');
+    }
+
+    public function test_tag_manager_replaces_analytics_when_both_are_set(): void
+    {
+        config([
+            'tracking.google_analytics_id' => 'G-TEST1234',
+            'tracking.google_tag_manager_id' => 'GTM-TEST999',
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('GTM-TEST999')
+            ->assertSee('googletagmanager.com/gtm.js', false)
+            ->assertDontSee('gtag/js?id=G-TEST1234', false);
+    }
+
+    public function test_admin_does_not_load_public_tracking(): void
+    {
+        config(['tracking.google_analytics_id' => 'G-TEST1234']);
+
+        $this->get('/admin/login')
+            ->assertOk()
+            ->assertDontSee('G-TEST1234');
+    }
+
+    public function test_sitemap_and_robots_are_published(): void
+    {
+        $this->get('/sitemap.xml')
+            ->assertOk()
+            ->assertHeader('content-type', 'application/xml; charset=UTF-8')
+            ->assertSee(route('home'), false)
+            ->assertSee(route('projects'), false)
+            ->assertSee(route('cv'), false);
+
+        $this->get('/robots.txt')
+            ->assertOk()
+            ->assertSee('Disallow: /admin')
+            ->assertSee('Sitemap: '.url('/sitemap.xml'), false);
+    }
+
     public function test_home_links_to_the_project_archive_when_more_work_exists(): void
     {
         $this->get('/')

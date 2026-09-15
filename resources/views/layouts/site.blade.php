@@ -8,6 +8,8 @@
     @hasSection('description')
         <meta name="description" content="@yield('description')">
     @endif
+    @include('partials.seo')
+    @include('partials.tracking')
     <link rel="icon" href="{{ asset('images/favicon.svg') }}" type="image/svg+xml">
     <link rel="apple-touch-icon" href="{{ asset('images/logo-mark.svg') }}">
     @include('partials.theme-init')
@@ -18,6 +20,7 @@
     @stack('head')
 </head>
 <body @class(trim($__env->yieldContent('body_class')))>
+    @include('partials.tracking-body')
     <div class="reading-progress" data-reading-progress aria-hidden="true"></div>
     <a class="skip-link" href="#main">Skip to content</a>
 
