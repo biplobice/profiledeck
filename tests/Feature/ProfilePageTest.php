@@ -136,6 +136,18 @@ class ProfilePageTest extends TestCase
             ->assertSee('application/ld+json', false);
     }
 
+    public function test_home_page_connects_public_aliases_to_the_profile_identity(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Also known as biplobice · biplob.ice')
+            ->assertSee('"alternateName": [', false)
+            ->assertSee('"biplobice"', false)
+            ->assertSee('"biplob.ice"', false)
+            ->assertSee('"@type": "ProfilePage"', false)
+            ->assertSee('"mainEntity"', false);
+    }
+
     public function test_google_analytics_is_injected_when_configured(): void
     {
         config([

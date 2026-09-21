@@ -4,9 +4,13 @@
     $seoDescription = trim($__env->yieldContent('description', $seoProfile->headline ?? ''));
     $seoUrl = url()->current();
     $seoImage = $seoProfile?->photoUrl();
+    $seoAlternateNames = config('seo.alternate_names', []);
 @endphp
 
 <link rel="canonical" href="{{ $seoUrl }}">
+@if ($seoProfile)
+    <meta name="author" content="{{ $seoProfile->name }}">
+@endif
 @if (filled(config('tracking.google_site_verification')))
     <meta name="google-site-verification" content="{{ config('tracking.google_site_verification') }}">
 @endif
@@ -30,7 +34,9 @@
         $personSchema = array_filter([
             '@context' => 'https://schema.org',
             '@type' => 'Person',
+            '@id' => url('/').'#person',
             'name' => $seoProfile->name,
+            'alternateName' => $seoAlternateNames ?: null,
             'jobTitle' => $seoProfile->headline,
             'description' => $seoDescription !== '' ? $seoDescription : null,
             'url' => $seoProfile->website ?: url('/'),
@@ -50,5 +56,22 @@
     @endphp
     <script type="application/ld+json">
         {!! json_encode($personSchema, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) !!}
+    </script>
+@endif
+
+@if (request()->routeIs('home') && $seoProfile)
+    @php
+        $profilePageSchema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'ProfilePage',
+            '@id' => url('/').'#profile-page',
+            'url' => url('/'),
+            'name' => $seoTitle,
+            'description' => $seoDescription,
+            'mainEntity' => ['@id' => url('/').'#person'],
+        ];
+    @endphp
+    <script type="application/ld+json">
+        {!! json_encode($profilePageSchema, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) !!}
     </script>
 @endif

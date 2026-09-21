@@ -24,6 +24,11 @@
                     <span>{{ $data->profile->name }}</span>
                 @endif
             </h1>
+            @if (config('seo.alternate_names'))
+                <p class="font-mono text-sm text-[color:var(--color-muted)]">
+                    Also known as {{ implode(' · ', config('seo.alternate_names')) }}
+                </p>
+            @endif
             <p class="hero-intro">{{ $data->resolve($data->profile->tagline) }}</p>
             <div class="hero-actions">
                 <a href="{{ route('cv.pdf') }}" class="btn btn-primary">Download CV &nbsp;→</a>
