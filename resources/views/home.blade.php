@@ -12,6 +12,8 @@
         $blogName = parse_url($data->profile->blog_url, PHP_URL_HOST) ?: 'Writing';
         $nameParts = preg_split('/\s+/', trim($data->profile->name), 2);
         $watermark = collect(explode(' ', $data->profile->name))->map(fn ($part) => strtoupper(substr($part, 0, 1)))->join('');
+        $whoamiPhoto = $data->profile->imageFor($data->profile->photo_path);
+        $aboutPhoto = $data->profile->imageFor($data->profile->about_photo_path);
     @endphp
 
     <section class="site-shell hero">
@@ -38,6 +40,15 @@
 
         <div class="hero-card" aria-label="A short introduction">
             <div class="terminal-bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            @if ($whoamiPhoto)
+                <img
+                    class="whoami-photo"
+                    src="{{ $whoamiPhoto['src'] }}"
+                    alt="{{ $data->profile->name }}"
+                    @if ($whoamiPhoto['width']) width="{{ $whoamiPhoto['width'] }}" @endif
+                    @if ($whoamiPhoto['height']) height="{{ $whoamiPhoto['height'] }}" @endif
+                >
+            @endif
             <code>
                 <span class="code-muted">$</span> whoami<br>
                 {{ $data->profile->name }}<br><br>
@@ -76,9 +87,20 @@
 
     <section id="about" class="site-shell section">
         <div class="about-strip" data-watermark="{{ $watermark }}">
-            <div>
+            <div class="about-lead">
                 <p class="eyebrow">01 — About</p>
                 <h2>Build calmly. Ship thoughtfully.</h2>
+                @if ($aboutPhoto)
+                    <figure class="about-photo">
+                        <img
+                            src="{{ $aboutPhoto['src'] }}"
+                            alt="Photograph of {{ $data->profile->name }}"
+                            width="{{ $aboutPhoto['width'] }}"
+                            height="{{ $aboutPhoto['height'] }}"
+                            loading="lazy"
+                        >
+                    </figure>
+                @endif
             </div>
             <div class="about-copy">
                 <p>{{ $data->resolve($data->profile->bio) }}</p>

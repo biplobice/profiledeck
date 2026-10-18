@@ -17,7 +17,7 @@
         ul { margin: 4px 0 0 16px; padding: 0; }
         li { margin-bottom: 2px; }
         .header td { padding-bottom: 10px; }
-        img.photo { width: 72px; height: 72px; }
+        img.photo { width: 72px; height: 72px; object-fit: cover; }
     </style>
 </head>
 <body>

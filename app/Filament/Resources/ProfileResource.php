@@ -6,10 +6,13 @@ use App\Filament\Resources\ProfileResource\Pages;
 use App\Models\Profile;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Forms\Components\BaseFileUpload;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class ProfileResource extends Resource
 {
@@ -52,9 +55,42 @@ class ProfileResource extends Resource
             Forms\Components\TextInput::make('github_url')->url(),
             Forms\Components\TextInput::make('linkedin_url')->url(),
             Forms\Components\TextInput::make('twitter_url')->url(),
-            Forms\Components\TextInput::make('photo_path'),
-            Forms\Components\TextInput::make('cv_photo_path'),
+            static::profilePhoto('photo_path', 'Who am I photo', 'Portrait in the whoami card. Also used when the profile is shared.'),
+            static::profilePhoto('cv_photo_path', 'CV photo', 'Portrait on the HTML CV and the PDF download.'),
+            static::profilePhoto('about_photo_path', 'About photo', 'Photograph in the About section. Leave empty to hide it.'),
         ]);
+    }
+
+    private static function profilePhoto(string $field, string $label, string $helper): Forms\Components\FileUpload
+    {
+        return Forms\Components\FileUpload::make($field)
+            ->label($label)
+            ->helperText($helper.'. A descriptive filename such as jane-doe-portrait.jpg is kept.')
+            ->image()
+            ->disk('public')
+            ->directory('profile')
+            ->visibility('public')
+            ->fetchFileInformation(false)
+            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                $name = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+
+                return ($name !== '' ? $name : 'profile-photo').'.'.strtolower($file->getClientOriginalExtension() ?: 'jpg');
+            })
+            ->getUploadedFileUsing(function (BaseFileUpload $component, string $file): ?array {
+                $url = Profile::urlForPath($file);
+
+                if ($url === null) {
+                    return null;
+                }
+
+                return [
+                    'name' => basename($file),
+                    'size' => 0,
+                    'type' => null,
+                    'url' => $url,
+                ];
+            })
+            ->columnSpanFull();
     }
 
     public static function table(Table $table): Table

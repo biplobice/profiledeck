@@ -115,8 +115,16 @@ Project uploads use Laravel's public disk. Run `php artisan storage:link` once
 per deployment. A project without a thumbnail receives an automatically
 generated initials tile.
 
-For a PDF portrait, set `cv_photo_path` to a file that exists under `public/`.
-The browser profile image uses `photo_path` in the same way.
+Profile photos are set on the Profile screen in the dashboard. Each one is
+optional:
+
+- **Who am I photo** (`photo_path`) appears in the whoami card and is the image used when the page is shared.
+- **CV photo** (`cv_photo_path`) appears on the HTML CV and the PDF.
+- **About photo** (`about_photo_path`) appears in the About section.
+
+Uploads are stored on the public disk under `profile/`. A descriptive filename
+is kept, so `Jane Doe Portrait.jpg` is saved as `jane-doe-portrait.jpg`.
+Existing files under `public/` still work if the stored path points at them.
 
 ## Routes
 

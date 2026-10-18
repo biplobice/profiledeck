@@ -13,10 +13,11 @@
             </p>
         </td>
         <td style="width: 80px; text-align: right;">
-            @if ($data->profile->cv_photo_path && (! ($forPdf ?? false) || file_exists(public_path($data->profile->cv_photo_path))))
+            @php($cvAbsolute = $data->profile->absolutePathFor($data->profile->cv_photo_path))
+            @if ($cvAbsolute)
                 <img
                     class="photo"
-                    src="{{ ($forPdf ?? false) ? public_path($data->profile->cv_photo_path) : asset($data->profile->cv_photo_path) }}"
+                    src="{{ ($forPdf ?? false) ? $cvAbsolute : $data->profile->cvPhotoUrl() }}"
                     alt=""
                 >
             @endif

@@ -114,6 +114,29 @@ class ProfilePageTest extends TestCase
         $this->get('/cv')->assertOk();
     }
 
+    public function test_whoami_cv_and_about_photos_are_independent(): void
+    {
+        $this->get('/')->assertDontSee('about-photo', false);
+
+        Profile::current()->update([
+            'photo_path' => 'images/demo/avatar.svg',
+            'cv_photo_path' => 'images/demo/project-atlas.svg',
+            'about_photo_path' => 'images/demo/project-beacon.svg',
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('class="whoami-photo"', false)
+            ->assertSee('images/demo/avatar.svg', false)
+            ->assertSee('class="about-photo"', false)
+            ->assertSee('images/demo/project-beacon.svg', false);
+
+        $this->get('/cv')
+            ->assertOk()
+            ->assertSee('class="photo"', false)
+            ->assertSee('images/demo/project-atlas.svg', false);
+    }
+
     public function test_cv_pdf_is_generated(): void
     {
         $this->get('/cv.pdf')
